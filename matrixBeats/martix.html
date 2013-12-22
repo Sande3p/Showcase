@@ -1,0 +1,79 @@
+<html>
+<!--
+@author SandeepYadav (http://sandeepyadav.net)
+-->
+<head>
+<title>&hearts; Martix</title>
+<style>
+*{margin:0;padding:0;}
+body {background: black; overflow: hidden;}
+canvas{display: block;}
+p{position: fixed; width: 100%; left: 0; top: 50%; color: #0f0; text-align: center; font-family: "Arial"; font-size: 30px;}
+
+/* heart beat animation */
+@-webkit-keyframes beat{
+0%{ font-size: 20px; color: #00f00;}
+100%{font-size: 90px; color: #ff0000;}
+}
+@-moz-keyframes beat{
+0%{ font-size: 20px; color: #00f00;}
+100%{font-size: 90px; color: #ff0000;}
+}
+@keyframes beat{
+0%{ font-size: 20px; color: #00f00;}
+100%{font-size: 90px; color: #ff0000;}
+}
+p{
+line-height: 100px;
+-webkit-animation: beat .5s cubic-bezier(1,.06,1,.8) .5s infinite alternate;
+-moz-animation: beat .5s cubic-bezier(1,.06,1,.8) .5s infinite alternate;
+animation: beat .5s cubic-bezier(1,.06,1,.8) .5s infinite alternate;
+}
+</style>
+
+</head>
+<body><canvas id="c"></canvas><p>&hearts;</p></body>
+
+<script>
+var c = document.getElementById("c");
+var ctx = c.getContext("2d");
+
+c.height = screen.height;
+c.width = screen.width;
+
+var text = "01";
+text=text.split("");
+
+var font_size = 10;
+var cols = c.width/font_size;
+
+var drops = [];
+
+for(var x = 0; x < cols; x++)
+drops[x] = 1; 
+
+// function to draw characters
+function draw(){
+	ctx.fillStyle= "rgba(0,0,0,0.05)";
+	ctx.fillRect(0,0,c.width,c.height);
+	
+	ctx.fillStyle = "#0f0";
+	ctx.font = font_size+"px arial";
+		
+	for(var i=0;i<drops.length;i++){	
+		// taking a random character to be printed
+		var txt = text[Math.floor(Math.random()*text.length)];		
+		ctx.fillText(txt,i*font_size,drops[i]*font_size);
+		
+		// randomness to reset so drops scatter on Y axis
+		if(drops[i]*font_size > c.height && Math.random() > 0.975)
+		drops[i]=0;
+		
+		// incrementing Y axis
+		drops[i]++
+	}
+}
+setInterval(draw,33);
+
+</script>
+</html>
