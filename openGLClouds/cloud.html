@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OPEN-GL Clouds</title>
+    <meta name="description" content="Flying through clouds" />
+	<style type="text/css">
+		html,body, div, canvas{
+			margin: 0;
+			padding: 0;
+			border: 0;
+			outline: 0;
+			vertical-align: baseline;
+		}
+		
+		body {
+			background-color: #000000;
+			overflow: hidden;
+			text-align:center;
+			font-weight: bold;
+		}
+	</style>
+	
+	
+    <script type="text/javascript" src="ThreeWebGL.js"></script>
+    <script type="text/javascript" src="ThreeExtras.js"></script>
+    <script type="text/javascript" src="Detector.js"></script>
+    <script type="text/javascript" src="RequestAnimationFrame.js"></script>
+    <script type="text/javascript" src="Stats.js"></script>
+    <script id="vertexShader" type="x-shader/x-vertex">
+			varying vec2 vUv;
+			void main() {
+				vUv = uv;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			}
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+			uniform sampler2D map;
+			uniform vec3 fogColor;
+			uniform float fogNear;
+			uniform float fogFar;
+			varying vec2 vUv;
+			void main() {
+
+				float depth = gl_FragCoord.z / gl_FragCoord.w;
+				float fogFactor = smoothstep( fogNear, fogFar, depth );
+
+				gl_FragColor = texture2D( map, vUv );
+				gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+				gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+
+			}
+    </script>
+    <script id="Script1" type="x-shader/x-fragment">
+			uniform sampler2D map;
+			uniform vec3 fogColor;
+			uniform float fogNear;
+			uniform float fogFar;
+			varying vec2 vUv;
+
+			void main() {
+				float depth = gl_FragCoord.z / gl_FragCoord.w;
+				float fogFactor = smoothstep( fogNear, fogFar, depth );
+				gl_FragColor = texture2D( map, vUv );
+				gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+				gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+			}
+    </script>   
+</head>
+<body>
+ <script type="text/javascript" src="cloud.js"></script>   
+</body>
+</html>
