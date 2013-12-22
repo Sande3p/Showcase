@@ -3,5 +3,5 @@ Showcase
 
 Showcase collections
 
-• openGLClouds animation using three.js
+• Collection of cool web animation.
 
